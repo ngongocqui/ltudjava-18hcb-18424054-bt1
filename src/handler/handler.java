@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.DanhSachDiem;
+import model.Diem;
 import model.LopHoc;
 import model.MonHoc;
 import model.SinhVien;
@@ -92,6 +94,47 @@ public class handler {
 		return tkb;
 	}
 	
+	public DanhSachDiem docFileDiem(String path) {
+		DanhSachDiem dsDiem = new DanhSachDiem();
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			
+			String line = br.readLine();
+			
+			while((line = br.readLine()) != null) {
+				dsDiem.setId(line.split(",")[0]);
+				ArrayList<Diem> arr = new ArrayList<>();
+
+				int n = Integer.parseInt(line.split(",")[1]);
+				
+				for(int i=0; i<n; i++) {
+					line = br.readLine();
+					Diem d = new Diem();
+					
+					d.setStt(i+1+"");
+					d.setMssv(line.split(",")[0]);
+					d.setTen(line.split(",")[1]);
+					d.setDiemGK(Double.parseDouble(line.split(",")[2]));
+					d.setDiemCK(Double.parseDouble(line.split(",")[3]));
+					d.setDiemKhac(Double.parseDouble(line.split(",")[4]));
+					d.setDiemTong(Double.parseDouble(line.split(",")[5]));
+					
+					arr.add(d);
+				}
+				
+				dsDiem.setDiem(arr);
+				
+				System.out.println("Thêm thành công!");
+			}
+			
+			br.close();
+		}catch(Exception ex) {
+			System.out.println("Thêm thất bại!");
+		}
+		return dsDiem;
+	}
+	
 	public void luuFileDanhSachLop(LopHoc l, String path) throws IOException {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
@@ -120,6 +163,26 @@ public class handler {
 				bw.write(tkb.getMh().get(i).getMaMon()+",");
 				bw.write(tkb.getMh().get(i).getTen()+",");
 				bw.write(tkb.getMh().get(i).getPhong());
+			}
+			bw.close();
+		}catch(Exception ex) {
+			System.out.println("Save thất bại!!");
+		}
+	}
+	
+	public void luuFileDanhSachDiem(DanhSachDiem dsDiem, String path) throws IOException {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+			bw.newLine();
+			bw.write(dsDiem.getId()+","+dsDiem.getDiem().size());
+			for(int i=0; i<dsDiem.getDiem().size(); i++) {
+				bw.newLine();
+				bw.write(dsDiem.getDiem().get(i).getMssv()+",");
+				bw.write(dsDiem.getDiem().get(i).getTen()+",");
+				bw.write(dsDiem.getDiem().get(i).getDiemGK()+",");
+				bw.write(dsDiem.getDiem().get(i).getDiemCK()+",");
+				bw.write(dsDiem.getDiem().get(i).getDiemKhac()+",");
+				bw.write(dsDiem.getDiem().get(i).getDiemTong()+"");
 			}
 			bw.close();
 		}catch(Exception ex) {

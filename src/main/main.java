@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import handler.handler;
+import model.DanhSachDiem;
+import model.Diem;
 import model.LopHoc;
 import model.SinhVien;
 import model.TKB;
@@ -18,7 +20,8 @@ public class main {
 	private static void menu() throws IOException {
 		ArrayList<LopHoc> arrLop = new ArrayList<>();
 		ArrayList<TKB> arrTKB = new ArrayList<>();
-
+		ArrayList<DanhSachDiem> arrDanhSachDiem = new ArrayList<>();
+		
 		Scanner scan = new Scanner(System.in);
 
 		while (true) {
@@ -28,6 +31,9 @@ public class main {
 			System.out.println("4.import thời khoá biểu.");
 			System.out.println("5.lưu thời khoá biểu.");
 			System.out.println("6.xem danh sách lớp.");
+			System.out.println("7.xem thời khoá biểu.");
+			System.out.println("8.import bảng điểm.");
+			System.out.println("9.lưu bảng điểm.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -71,6 +77,7 @@ public class main {
 					String folder = scan.nextLine();
 				
 					luuDanhSachLop(arrLop, folder);
+					break;
 				}
 			case "4":{
 					// yêu cầu 4: import thời khoá biểu
@@ -94,13 +101,65 @@ public class main {
 					String folder = scan.nextLine();
 				
 					luuThoiKhoaBieu(arrTKB, folder);
+					break;
 				}
 			case "6":{
+					// yêu cầu 5: xem danh sách lớp
 					System.out.println("Nhập id lớp: ");
 					String id = scan.nextLine();
 				
 					xemDanhSachLop(arrLop, id);
+					break;
 				}
+			case "7":{
+					// yêu cầu 6: xem thời khoá biểu
+					System.out.println("Nhập id lớp: ");
+					String id = scan.nextLine();
+				
+					xemThoiKhoaBieu(arrTKB, id);
+					break;
+				}
+			case "8":{
+					// yêu cầu 7: import bảng điểm
+					DanhSachDiem dsDiem = new DanhSachDiem();
+					dsDiem = import_DanhSachDiem();
+	
+					boolean kt = true;
+					for (DanhSachDiem a : arrDanhSachDiem) {
+						if (a.getId() == dsDiem.getId()) {
+							kt = false;
+							break;
+						}
+					}
+	
+					if (kt) arrDanhSachDiem.add(dsDiem);
+	
+					break;
+				}
+			case "9":{
+					System.out.println("Nhập folder save file danh sách điểm: ");
+					String folder = scan.nextLine();
+				
+					luuDanhSachDiem(arrDanhSachDiem, folder);
+					break;
+				}
+			}
+		}
+	}
+
+	private static void xemThoiKhoaBieu(ArrayList<TKB> arrTKB, String id) {
+		for(TKB l:arrTKB) {
+			if(l.getId().equalsIgnoreCase(id)) {
+				System.out.println("Danh sách lớp: "+l.getId());
+				
+				for(int i=0; i<l.getMh().size(); i++) {
+					System.out.println("STT: "+l.getMh().get(i).getStt());
+					System.out.println("Mã môn: "+l.getMh().get(i).getMaMon());
+					System.out.println("Tên: "+l.getMh().get(i).getTen());
+					System.out.println("Phòng học: "+l.getMh().get(i).getPhong());
+				}
+						
+				break;
 			}
 		}
 	}
@@ -130,6 +189,13 @@ public class main {
 		}
 	}
 	
+	private static void luuDanhSachDiem(ArrayList<DanhSachDiem> arrDanhSachDiem, String folder) throws IOException {
+		handler handler = new handler();
+		for(int i = 0; i<arrDanhSachDiem.size(); i++) {
+			handler.luuFileDanhSachDiem(arrDanhSachDiem.get(i), folder+"/"+arrDanhSachDiem.get(i).getId()+"-DIEM.csv");
+		}
+	}
+	
 	private static void luuThoiKhoaBieu(ArrayList<TKB> arrTKB, String folder) throws IOException {
 		handler handler = new handler();
 		for(int i = 0; i<arrTKB.size(); i++) {
@@ -145,6 +211,16 @@ public class main {
 		LopHoc l = handler.docFileDanhSachLop(path);
 
 		return l;
+	}
+	
+	private static DanhSachDiem import_DanhSachDiem() throws IOException {
+		System.out.print("Nhập path file danh sách điểm: ");
+		String path = new Scanner(System.in).nextLine();
+
+		handler handler = new handler();
+		DanhSachDiem dsDiem = handler.docFileDiem(path);
+
+		return dsDiem;
 	}
 	
 	private static TKB import_TKB() throws IOException {
