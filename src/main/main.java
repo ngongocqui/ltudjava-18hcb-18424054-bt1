@@ -7,6 +7,7 @@ import java.util.Scanner;
 import handler.handler;
 import model.LopHoc;
 import model.SinhVien;
+import model.TKB;
 
 public class main {
 
@@ -16,12 +17,16 @@ public class main {
 
 	private static void menu() throws IOException {
 		ArrayList<LopHoc> arrLop = new ArrayList<>();
+		ArrayList<TKB> arrTKB = new ArrayList<>();
+
 		Scanner scan = new Scanner(System.in);
 
 		while (true) {
 			System.out.println("1.import danh sách lớp.");
 			System.out.println("2.thêm sinh viên vào lớp.");
 			System.out.println("3.lưu danh sách lớp.");
+			System.out.println("4.import thời khoá biểu.");
+			System.out.println("5.lưu thời khoá biểu.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -39,12 +44,12 @@ public class main {
 						}
 					}
 	
-					if (kt)
-						arrLop.add(l);
+					if (kt) arrLop.add(l);
 	
 					break;
 				}
 			case "2": {
+					// yêu cầu 2: thêm sinh viên
 					System.out.println("Nhập id lớp cần thêm: ");
 					String id = scan.nextLine();
 					LopHoc l = null;
@@ -56,9 +61,7 @@ public class main {
 						}
 					}
 	
-					if (l != null) {
-						addSinhVien(l);
-					}
+					if (l != null) addSinhVien(l);
 	
 					break;
 				}
@@ -68,6 +71,29 @@ public class main {
 				
 					luuDanhSachLop(arrLop, folder);
 				}
+			case "4":{
+					// yêu cầu 4: import thời khoá biểu
+					TKB tkb = new TKB();
+					tkb = import_TKB();
+	
+					boolean kt = true;
+					for (TKB a : arrTKB) {
+						if (a.getId() == tkb.getId()) {
+							kt = false;
+							break;
+						}
+					}
+	
+					if (kt) arrTKB.add(tkb);
+	
+					break;
+				}
+			case "5":{
+					System.out.println("Nhập folder save file thời khoá biểu: ");
+					String folder = scan.nextLine();
+				
+					luuThoiKhoaBieu(arrTKB, folder);
+				}
 			}
 		}
 	}
@@ -76,6 +102,13 @@ public class main {
 		handler handler = new handler();
 		for(int i = 0; i<arrLop.size(); i++) {
 			handler.luuFileDanhSachLop(arrLop.get(i), folder+"/"+arrLop.get(i).getId()+".csv");
+		}
+	}
+	
+	private static void luuThoiKhoaBieu(ArrayList<TKB> arrTKB, String folder) throws IOException {
+		handler handler = new handler();
+		for(int i = 0; i<arrTKB.size(); i++) {
+			handler.luuFileTKB(arrTKB.get(i), folder+"/"+arrTKB.get(i).getId()+"_TKB.csv");
 		}
 	}
 
@@ -89,7 +122,15 @@ public class main {
 		return l;
 	}
 	
-	
+	private static TKB import_TKB() throws IOException {
+		System.out.print("Nhập path file thời khoá biểu: ");
+		String path = new Scanner(System.in).nextLine();
+
+		handler handler = new handler();
+		TKB tkb = handler.docFileThoiKhoaBieu(path);
+
+		return tkb;
+	}
 
 	private static LopHoc addSinhVien(LopHoc l) throws IOException {
 		System.out.print("Nhập mssv: ");
