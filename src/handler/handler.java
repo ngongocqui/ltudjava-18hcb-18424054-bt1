@@ -16,7 +16,7 @@ public class handler {
 	public LopHoc docFileDanhSachLop(String path) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		
-		String line;
+		String line = br.readLine();
 		LopHoc l = new LopHoc();
 		
 		while((line = br.readLine()) != null) {
@@ -41,11 +41,14 @@ public class handler {
 			l.setSv(arr);
 		}
 		
+		br.close();
+		
 		return l;
 	}
 	
 	public void luuFileDanhSachLop(LopHoc l, String path) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+		bw.newLine();
 		bw.write(l.getId()+","+l.getSv().size());
 		for(int i=0; i<l.getSv().size(); i++) {
 			bw.newLine();
@@ -54,5 +57,6 @@ public class handler {
 			bw.write(l.getSv().get(i).getGioiTinh()+",");
 			bw.write(l.getSv().get(i).getCmnd());
 		}
+		bw.close();
 	}
 }

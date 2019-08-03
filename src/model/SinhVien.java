@@ -7,6 +7,19 @@ public class SinhVien {
 	private String ten;
 	private String gioiTinh;
 	private String cmnd;
+		
+	public SinhVien() {
+		super();
+	}
+
+	public SinhVien(String stt, String mssv, String ten, String gioiTinh, String cmnd) {
+		super();
+		this.stt = stt;
+		this.mssv = mssv;
+		this.ten = ten;
+		this.gioiTinh = gioiTinh;
+		this.cmnd = cmnd;
+	}
 	
 	public String getStt() {
 		return stt;
