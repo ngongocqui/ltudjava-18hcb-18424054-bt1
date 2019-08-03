@@ -34,6 +34,7 @@ public class main {
 			System.out.println("7.xem thời khoá biểu.");
 			System.out.println("8.import bảng điểm.");
 			System.out.println("9.lưu bảng điểm.");
+			System.out.println("10.xem bảng điểm.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -143,6 +144,40 @@ public class main {
 					luuDanhSachDiem(arrDanhSachDiem, folder);
 					break;
 				}
+			case "10":{
+					// yêu cầu 8: xem bảng điểm
+					System.out.println("Nhập id lớp: ");
+					String id = scan.nextLine();
+				
+					xemBangDiem(arrDanhSachDiem, id);
+					break;
+				}
+			}
+		}
+	}
+	
+	private static void xemBangDiem(ArrayList<DanhSachDiem> arrDanhSachDiem, String id) {
+		for(DanhSachDiem l:arrDanhSachDiem) {
+			if(l.getId().equalsIgnoreCase(id)) {
+				System.out.println("Bảng điểm lớp: "+l.getId());
+				
+				for(int i=0; i<l.getDiem().size(); i++) {
+					System.out.println("STT: "+l.getDiem().get(i).getStt());
+					System.out.println("MSSV: "+l.getDiem().get(i).getMssv());
+					System.out.println("Tên: "+l.getDiem().get(i).getTen());
+					System.out.println("Điểm GK: "+l.getDiem().get(i).getDiemGK());
+					System.out.println("Điểm CK: "+l.getDiem().get(i).getDiemCK());
+					System.out.println("Điểm Khác: "+l.getDiem().get(i).getDiemKhac());
+					System.out.println("Điểm Tổng: "+l.getDiem().get(i).getDiemTong());
+					System.out.println("Kết quả: "+(l.getDiem().get(i).getDiemTong() >= 5 ? "Đậu": "Rớt"));
+					System.out.println("Sô sinh viên đậu: "+l.getSinhVienDau());
+					System.out.println("Sô sinh viên rớt: "+l.getSinhVienRot());
+					System.out.println("Phần trăm sinh viên đậu: "+l.getPhanTramSinhVienDau()+"%");
+					System.out.println("Phần trăm sinh viên rớt: "+l.getPhanTramSinhVienRot()+"%");
+					System.out.println();
+				}
+						
+				break;
 			}
 		}
 	}
@@ -150,13 +185,14 @@ public class main {
 	private static void xemThoiKhoaBieu(ArrayList<TKB> arrTKB, String id) {
 		for(TKB l:arrTKB) {
 			if(l.getId().equalsIgnoreCase(id)) {
-				System.out.println("Danh sách lớp: "+l.getId());
+				System.out.println("Thời khoá biểu lớp: "+l.getId());
 				
 				for(int i=0; i<l.getMh().size(); i++) {
 					System.out.println("STT: "+l.getMh().get(i).getStt());
 					System.out.println("Mã môn: "+l.getMh().get(i).getMaMon());
 					System.out.println("Tên: "+l.getMh().get(i).getTen());
 					System.out.println("Phòng học: "+l.getMh().get(i).getPhong());
+					System.out.println();
 				}
 						
 				break;
@@ -175,6 +211,7 @@ public class main {
 					System.out.println("Tên: "+l.getSv().get(i).getTen());
 					System.out.println("Giới Tính: "+l.getSv().get(i).getGioiTinh());
 					System.out.println("CMND: "+l.getSv().get(i).getCmnd());
+					System.out.println();
 				}
 						
 				break;
