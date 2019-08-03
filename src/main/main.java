@@ -27,6 +27,7 @@ public class main {
 			System.out.println("3.lưu danh sách lớp.");
 			System.out.println("4.import thời khoá biểu.");
 			System.out.println("5.lưu thời khoá biểu.");
+			System.out.println("6.xem danh sách lớp.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -94,6 +95,30 @@ public class main {
 				
 					luuThoiKhoaBieu(arrTKB, folder);
 				}
+			case "6":{
+					System.out.println("Nhập id lớp: ");
+					String id = scan.nextLine();
+				
+					xemDanhSachLop(arrLop, id);
+				}
+			}
+		}
+	}
+
+	private static void xemDanhSachLop(ArrayList<LopHoc> arrLop, String id) {
+		for(LopHoc l:arrLop) {
+			if(l.getId().equalsIgnoreCase(id)) {
+				System.out.println("Danh sách lớp: "+l.getId());
+				
+				for(int i=0; i<l.getSv().size(); i++) {
+					System.out.println("STT: "+l.getSv().get(i).getStt());
+					System.out.println("MSSV: "+l.getSv().get(i).getMssv());
+					System.out.println("Tên: "+l.getSv().get(i).getTen());
+					System.out.println("Giới Tính: "+l.getSv().get(i).getGioiTinh());
+					System.out.println("CMND: "+l.getSv().get(i).getCmnd());
+				}
+						
+				break;
 			}
 		}
 	}
