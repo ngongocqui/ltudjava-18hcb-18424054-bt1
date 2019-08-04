@@ -35,6 +35,7 @@ public class main {
 			System.out.println("8.import bảng điểm.");
 			System.out.println("9.lưu bảng điểm.");
 			System.out.println("10.xem bảng điểm.");
+			System.out.println("11.sửa điểm 1 sinh viên.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -152,10 +153,49 @@ public class main {
 					xemBangDiem(arrDanhSachDiem, id);
 					break;
 				}
+			case "11":{
+					// yêu cầu 9: sửa điểm 1 sinh viên
+					suaDiemSinhVien(arrDanhSachDiem);
+					break;
+				}
 			}
 		}
 	}
 	
+	private static void suaDiemSinhVien(ArrayList<DanhSachDiem> arrDanhSachDiem) {
+		System.out.println("Nhập id lớp: ");
+		String idLop = new Scanner(System.in).nextLine();
+		
+		for(DanhSachDiem ds:arrDanhSachDiem) {
+			if(ds.getId().equals(idLop)) {
+				System.out.println("Nhập mssv: ");
+				String mssv = new Scanner(System.in).nextLine();
+				
+				for(int i=0; i<ds.getDiem().size(); i++) {
+					if(ds.getDiem().get(i).getMssv().equals(mssv)) {
+						System.out.println("Nhập điểm giữa kì: ");
+						Double diemGK = new Scanner(System.in).nextDouble();
+						System.out.println("Nhập điểm cuối kì: ");
+						Double diemCK = new Scanner(System.in).nextDouble();
+						System.out.println("Nhập điểm khác: ");
+						Double diemKhac = new Scanner(System.in).nextDouble();
+						System.out.println("Nhập điểm tổng: ");
+						Double diemTong = new Scanner(System.in).nextDouble();
+						
+						ds.getDiem().get(i).setDiemGK(diemGK);
+						ds.getDiem().get(i).setDiemCK(diemCK);
+						ds.getDiem().get(i).setDiemKhac(diemKhac);
+						ds.getDiem().get(i).setDiemTong(diemTong);
+						
+						break;
+					}
+				}
+				
+				break;
+			}
+		}
+	}
+
 	private static void xemBangDiem(ArrayList<DanhSachDiem> arrDanhSachDiem, String id) {
 		for(DanhSachDiem l:arrDanhSachDiem) {
 			if(l.getId().equalsIgnoreCase(id)) {
