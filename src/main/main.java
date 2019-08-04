@@ -26,12 +26,13 @@ public class main {
 			
 			if(checkDangNhap(tk, username, password)) {
 				if(username.equals("giaovu")) {
-					menu();
+					menu(tk, username, password);
 				}
+			}else {
+				System.out.println("Nhập sai username hoặc password !!!");
 			}
 		}
 	}
-	
 	
 	private static boolean checkDangNhap(ArrayList<TaiKhoan> tk, String username, String password) {
 		boolean kt = false;
@@ -52,7 +53,7 @@ public class main {
 		return tk;
 	}
 
-	private static void menu() throws IOException {
+	private static void menu(ArrayList<TaiKhoan> tk, String username, String password) throws IOException {
 		ArrayList<LopHoc> arrLop = new ArrayList<>();
 		ArrayList<TKB> arrTKB = new ArrayList<>();
 		ArrayList<DanhSachDiem> arrDanhSachDiem = new ArrayList<>();
@@ -72,7 +73,8 @@ public class main {
 			System.out.println("9.lưu bảng điểm.");
 			System.out.println("10.xem bảng điểm.");
 			System.out.println("11.sửa điểm 1 sinh viên.");
-			System.out.println("12.Đăng xuất.");
+			System.out.println("12.Đổi mật khẩu.");
+			System.out.println("13.Đăng xuất.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -196,6 +198,11 @@ public class main {
 					break;
 				}
 			case "12":{
+					// yêu cầu 9: đổi mật khẩu
+					doiMatKhau(tk, username, password);
+					break;
+				}
+			case "13":{
 				    login = false;
 				    System.out.println("Đăng xuất thành công !");
 				    System.out.println();
@@ -205,6 +212,26 @@ public class main {
 		}
 	}
 	
+	private static void doiMatKhau(ArrayList<TaiKhoan> tk, String username, String password) {
+		for(int i=0; i<tk.size(); i++) {
+			if(tk.get(i).getUsername().equals(username)) {
+				System.out.println("Nhập lại password cũ: ");
+				String passwordOld = new Scanner(System.in).nextLine();
+				
+				if(tk.get(i).getPassword().equals(password)) {
+					System.out.println("Nhập password mới: ");
+					String passwordNew = new Scanner(System.in).nextLine();
+					
+					tk.get(i).setPassword(passwordNew);
+				}else {
+					System.out.println("Nhập sai password!");
+				}
+				
+				break;
+			}
+		}
+	}
+
 	private static void suaDiemSinhVien(ArrayList<DanhSachDiem> arrDanhSachDiem) {
 		System.out.println("Nhập id lớp: ");
 		String idLop = new Scanner(System.in).nextLine();
