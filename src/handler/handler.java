@@ -167,6 +167,22 @@ public class handler {
 		return ds;
 	}
 	
+	public void luuFileTaiKhoan(ArrayList<TaiKhoan> tk, String path) throws IOException {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+			bw.newLine();
+			bw.write(tk.size());
+			for(int i=0; i<tk.size(); i++) {
+				bw.newLine();
+				bw.write(tk.get(i).getUsername()+",");
+				bw.write(tk.get(i).getPassword());
+			}
+			bw.close();
+		}catch(Exception ex) {
+			System.out.println("Save thất bại!!");
+		}
+	}
+	
 	public void luuFileDanhSachLop(LopHoc l, String path) throws IOException {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path));

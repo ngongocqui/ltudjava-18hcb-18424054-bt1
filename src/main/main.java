@@ -27,6 +27,8 @@ public class main {
 			if(checkDangNhap(tk, username, password)) {
 				if(username.equals("giaovu")) {
 					menu(tk, username, password);
+				}else {
+					menuSinhVien(tk, username, password);
 				}
 			}else {
 				System.out.println("Nhập sai username hoặc password !!!");
@@ -34,6 +36,49 @@ public class main {
 		}
 	}
 	
+	private static void menuSinhVien(ArrayList<TaiKhoan> tk, String username, String password) throws IOException {
+		ArrayList<LopHoc> arrLop = new ArrayList<>();
+		ArrayList<TKB> arrTKB = new ArrayList<>();
+		ArrayList<DanhSachDiem> arrDanhSachDiem = new ArrayList<>();
+		
+		Scanner scan = new Scanner(System.in);
+		boolean login = true;
+		
+		handler handler = new handler();
+		DanhSachDiem dsDiem = handler.docFileDiem("data/18HCB-CTT001-DIEM.csv");
+		arrDanhSachDiem.add(dsDiem);
+		
+		while (login) {
+			System.out.println("1.xem bảng điểm.");
+			System.out.println("2.Đổi mật khẩu.");
+			System.out.println("3.Đăng xuất.");
+			System.out.println("Bạn chọn: ");
+			String select = scan.nextLine();
+
+			switch (select) {
+			case "1":{
+					// yêu cầu 8: xem bảng điểm
+					System.out.println("Nhập id lớp: ");
+					String id = scan.nextLine();
+				
+					xemBangDiemCuaSinhVien(arrDanhSachDiem, id, username);
+					break;
+				}
+			case "2":{
+					// yêu cầu 9: đổi mật khẩu
+					doiMatKhau(tk, username, password);
+					break;
+				}
+			case "3":{
+				    login = false;
+				    System.out.println("Đăng xuất thành công !");
+				    System.out.println();
+					break;
+				}
+			}
+		}
+	}
+
 	private static boolean checkDangNhap(ArrayList<TaiKhoan> tk, String username, String password) {
 		boolean kt = false;
 		for(TaiKhoan a:tk) {
@@ -212,7 +257,7 @@ public class main {
 		}
 	}
 	
-	private static void doiMatKhau(ArrayList<TaiKhoan> tk, String username, String password) {
+	private static void doiMatKhau(ArrayList<TaiKhoan> tk, String username, String password) throws IOException {
 		for(int i=0; i<tk.size(); i++) {
 			if(tk.get(i).getUsername().equals(username)) {
 				System.out.println("Nhập lại password cũ: ");
@@ -230,6 +275,9 @@ public class main {
 				break;
 			}
 		}
+		
+		handler handler = new handler();
+		handler.luuFileTaiKhoan(tk, "data/taikhoan.csv");
 	}
 
 	private static void suaDiemSinhVien(ArrayList<DanhSachDiem> arrDanhSachDiem) {
@@ -285,6 +333,32 @@ public class main {
 					System.out.println("Phần trăm sinh viên đậu: "+l.getPhanTramSinhVienDau()+"%");
 					System.out.println("Phần trăm sinh viên rớt: "+l.getPhanTramSinhVienRot()+"%");
 					System.out.println();
+				}
+						
+				break;
+			}
+		}
+	}
+	
+	private static void xemBangDiemCuaSinhVien(ArrayList<DanhSachDiem> arrDanhSachDiem, String id, String username) {
+		for(DanhSachDiem l:arrDanhSachDiem) {
+			if(l.getId().equalsIgnoreCase(id)) {
+				System.out.println("Bảng điểm lớp: "+l.getId());
+				
+				for(int i=0; i<l.getDiem().size(); i++) {
+					if(l.getDiem().get(i).getMssv().equals(username)) {
+						System.out.println("STT: "+l.getDiem().get(i).getStt());
+						System.out.println("MSSV: "+l.getDiem().get(i).getMssv());
+						System.out.println("Tên: "+l.getDiem().get(i).getTen());
+						System.out.println("Điểm GK: "+l.getDiem().get(i).getDiemGK());
+						System.out.println("Điểm CK: "+l.getDiem().get(i).getDiemCK());
+						System.out.println("Điểm Khác: "+l.getDiem().get(i).getDiemKhac());
+						System.out.println("Điểm Tổng: "+l.getDiem().get(i).getDiemTong());
+						System.out.println("Kết quả: "+(l.getDiem().get(i).getDiemTong() >= 5 ? "Đậu": "Rớt"));
+						System.out.println();
+						
+						break;
+					}
 				}
 						
 				break;
