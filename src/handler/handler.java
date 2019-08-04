@@ -14,6 +14,7 @@ import model.LopHoc;
 import model.MonHoc;
 import model.SinhVien;
 import model.TKB;
+import model.TaiKhoan;
 
 public class handler {
 
@@ -133,6 +134,37 @@ public class handler {
 			System.out.println("Thêm thất bại!");
 		}
 		return dsDiem;
+	}
+	
+	public ArrayList<TaiKhoan> docFileTaiKhoan(String path) {
+		ArrayList<TaiKhoan> ds = new ArrayList<>();
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			
+			String line = br.readLine();
+			
+			while((line = br.readLine()) != null) {
+				int n = Integer.parseInt(line);
+				
+				for(int i=0; i<n; i++) {
+					line = br.readLine();
+					TaiKhoan d = new TaiKhoan();
+					
+					d.setUsername(line.split(",")[0]);
+					d.setPassword(line.split(",")[1]);
+					
+					ds.add(d);
+				}
+								
+				System.out.println("Thêm thành công!");
+			}
+			
+			br.close();
+		}catch(Exception ex) {
+			System.out.println("Thêm thất bại!");
+		}
+		return ds;
 	}
 	
 	public void luuFileDanhSachLop(LopHoc l, String path) throws IOException {

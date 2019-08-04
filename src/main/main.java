@@ -10,11 +10,46 @@ import model.Diem;
 import model.LopHoc;
 import model.SinhVien;
 import model.TKB;
+import model.TaiKhoan;
 
 public class main {
 
 	public static void main(String[] args) throws IOException {
-		menu();
+		ArrayList<TaiKhoan> tk = import_TaiKhoan();
+		
+		while(true) {
+			System.out.println("Đăng nhập tài khoản");
+			System.out.print("Username: ");
+			String username = new Scanner(System.in).nextLine();
+			System.out.print("Password: ");
+			String password = new Scanner(System.in).nextLine();
+			
+			if(checkDangNhap(tk, username, password)) {
+				if(username.equals("giaovu")) {
+					menu();
+				}
+			}
+		}
+	}
+	
+	
+	private static boolean checkDangNhap(ArrayList<TaiKhoan> tk, String username, String password) {
+		boolean kt = false;
+		for(TaiKhoan a:tk) {
+			if(a.DangNhapTaiKhoan(username, password)) {
+				kt = true;
+				break;
+			}
+		}
+		
+		return kt;
+	}
+
+	private static ArrayList<TaiKhoan> import_TaiKhoan() throws IOException {
+		handler handler = new handler();
+		ArrayList<TaiKhoan> tk = handler.docFileTaiKhoan("data/taikhoan.csv");
+
+		return tk;
 	}
 
 	private static void menu() throws IOException {
@@ -23,8 +58,9 @@ public class main {
 		ArrayList<DanhSachDiem> arrDanhSachDiem = new ArrayList<>();
 		
 		Scanner scan = new Scanner(System.in);
+		boolean login = true;
 
-		while (true) {
+		while (login) {
 			System.out.println("1.import danh sách lớp.");
 			System.out.println("2.thêm sinh viên vào lớp.");
 			System.out.println("3.lưu danh sách lớp.");
@@ -36,6 +72,7 @@ public class main {
 			System.out.println("9.lưu bảng điểm.");
 			System.out.println("10.xem bảng điểm.");
 			System.out.println("11.sửa điểm 1 sinh viên.");
+			System.out.println("12.Đăng xuất.");
 			System.out.println("Bạn chọn: ");
 			String select = scan.nextLine();
 
@@ -156,6 +193,12 @@ public class main {
 			case "11":{
 					// yêu cầu 9: sửa điểm 1 sinh viên
 					suaDiemSinhVien(arrDanhSachDiem);
+					break;
+				}
+			case "12":{
+				    login = false;
+				    System.out.println("Đăng xuất thành công !");
+				    System.out.println();
 					break;
 				}
 			}
